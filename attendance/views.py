@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 
 # Create your views here.
 
+
+############# Employee Views ####################
 class AllEmployeesList(APIView):
     def get (self, request):
        all_employees = Employee.objects.all()
@@ -22,6 +24,38 @@ class AllEmployeesList(APIView):
         }
        return JsonResponse(sample_employee, status=status.HTTP_200_OK)
     
+class AddEmployee(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = AllEmployeeSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+class EditEmployee(APIView):
+
+    def put(self, request, pk):
+        employee = self.get_object(pk)
+        serializer = AllEmployeeSerializer(employee, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response_date = {
+                "message": "Employee updated successfully",
+                "data": serializer.data
+            }
+            return JsonResponse(response_date, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteEmployee(APIView):
+    def delete(self, request, pk):
+        employee = self.get_object(pk)
+        employee.delete()
+        return JsonResponse({"message": "Employee deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+############# Role Views ####################
 class AllRoles(APIView):
     def get (self, request):
        all_roles = Role.objects.all()
@@ -35,8 +69,36 @@ class AllRoles(APIView):
 
 
        return JsonResponse(sample_role, status=status.HTTP_200_OK)    
-    
 
+class AddRole(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = AllRoleSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    
+class EditRole(APIView):
+    def put(self, request, pk):
+        role = self.get_object(pk)
+        serializer = AllRoleSerializer(role, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response_date = {
+                "message": "Role updated successfully",
+                "data": serializer.data
+            }
+            return JsonResponse(response_date, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    
+class DeleteRole(APIView):
+    def delete(self, request, pk):
+        role = self.get_object(pk)
+        role.delete()
+        return JsonResponse({"message": "Role deleted successfully"}, status=status.HTTP_204_NO_CONTENT)    
+    
+############# Site Views ####################
 class AllSites(APIView):
     def get (self, request):
        all_sites = Sites.objects.all()
@@ -49,7 +111,35 @@ class AllSites(APIView):
         }
        return JsonResponse(sample_site, status=status.HTTP_200_OK)  
 
+class AddSite(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = AllSiteSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
 
+class EditSite(APIView):
+    def put(self, request, pk):
+        site = self.get_object(pk)
+        serializer = AllSiteSerializer(site, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response_date = {
+                "message": "Site updated successfully",
+                "data": serializer.data
+            }
+            return JsonResponse(response_date, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteSite(APIView):
+    def delete(self, request, pk):
+        site = self.get_object(pk)
+        site.delete()
+        return JsonResponse({"message": "Site deleted successfully"}, status=status.HTTP_204_NO_CONTENT)    
+
+############# Attendance Views ####################
 class SiteAttendanceList(APIView):
     def get (self, request):
        all_site_attendance = SiteAttendance.objects.all()
@@ -77,29 +167,7 @@ class EmployeeAttendanceList(APIView):
         }
        return JsonResponse(sample_employee_attendance, status=status.HTTP_200_OK)    
     
-class AddEmployee(APIView):
-    def post(self, request):
-        data = request.data
-        serializer = AllEmployeeSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class AddRole(APIView):
-    def post(self, request):
-        data = request.data
-        serializer = AllRoleSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class AddSite(APIView):
-    def post(self, request):
-        data = request.data
-        serializer = AllSiteSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
+
+         
