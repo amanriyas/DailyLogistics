@@ -10,7 +10,7 @@ urlpatterns = [
     path('all-roles/', AllRoles.as_view(), name='all-roles'),
     path('add-role/', AddRole.as_view(), name='add-role'),
     path('edit-role/<int:pk>/', EditRole.as_view(), name='edit-role'),
-    path('delete-role/<int:id>/', DeleteRole.as_view(), name='delete-role'),
+    path('delete-role/<int:pk>/', DeleteRole.as_view(), name='delete-role'),
 
     path('all-sites/', AllSites.as_view(), name='all-sites'),
     path('add-site/', AddSite.as_view(), name='add-site'),
