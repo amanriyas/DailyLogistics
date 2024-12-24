@@ -149,6 +149,19 @@ class SiteAttendanceList(APIView):
        all_site_attendance = SiteAttendance.objects.all()
        serializer = SiteAttendanceSerializer(all_site_attendance, many=True)
        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AddSiteAttendance(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = SiteAttendanceSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            response_data = {
+                "message": "Site attendance added successfully",
+                "data": serializer.data
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
     
 class EmployeeAttendanceList(APIView):
     def get (self, request):

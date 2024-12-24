@@ -18,5 +18,7 @@ urlpatterns = [
     path('delete-site/<int:pk>/', DeleteSite.as_view(), name='delete-site'),
 
     path('site-attendance/', SiteAttendanceList.as_view(), name='site-attendance'),
+    path('add-site-attendance/', AddSiteAttendance.as_view(), name='add-site-attendance'),
+
     path('employee-attendance/', EmployeeAttendanceList.as_view(), name='employee-attendance'),   
 ]
