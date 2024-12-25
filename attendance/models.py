@@ -52,21 +52,21 @@ class SiteAttendance(models.Model):
     date = models.DateField(auto_now=True)
     no_of_hours = models.IntegerField()
     status = models.CharField(max_length=200,choices=ATTENDANCE_STATUS)   
-
+    remarks = models.CharField(max_length=200, blank=True, null=True)
     class Meta:
         db_table = 'site_attendance'
 
 
-class EmployeeAttendance(models.Model):
+# class EmployeeAttendance(models.Model):
      
-    ATTENDANCE_STATUS = [('absent','Absent'),('present','Present'),('leave','Leave')]
+#     ATTENDANCE_STATUS = [('absent','Absent'),('present','Present'),('leave','Leave')]
 
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    site_id = models.ForeignKey(Sites, on_delete=models.CASCADE)
-    date = models.DateField()
-    status = models.CharField(max_length=200, choices=ATTENDANCE_STATUS)
-    remarks = models.CharField(max_length=200, blank=True, null=True)
+#     employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+#     site_id = models.ForeignKey(Sites, on_delete=models.CASCADE)
+#     date = models.DateField()
+#     status = models.CharField(max_length=200, choices=ATTENDANCE_STATUS)
+    
 
-    class Meta:
-        db_table = 'employee_attendance'
+#     class Meta:
+#         db_table = 'employee_attendance'
     

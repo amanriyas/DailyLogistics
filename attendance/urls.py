@@ -18,7 +18,8 @@ urlpatterns = [
     path('delete-site/<int:pk>/', DeleteSite.as_view(), name='delete-site'),
 
     path('site-attendance/', SiteAttendanceList.as_view(), name='site-attendance'),
-    path('add-site-attendance/', AddSiteAttendance.as_view(), name='add-site-attendance'),
+    path('add-attendance/', AddAttendance.as_view(), name='add-site-attendance'),
+    path('edit-attendance/<int:pk>/', EditAttendance.as_view(), name='edit-site-attendance'),
 
-    path('employee-attendance/', EmployeeAttendanceList.as_view(), name='employee-attendance'),   
+    # path('employee-attendance/', EmployeeAttendanceList.as_view(), name='employee-attendance'),   
 ]
