@@ -1,0 +1,64 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+    # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+    # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+    # Step 4: Set up Database
+      - name: Set up PostgreSQL
+        run: sudo apt-get install -y postgresql postgresql-contrib
+      - name: Initialize PostgreSQL
+        run: |
+          sudo service postgresql start
+          sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DB_NAME }};"
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USER }} WITH PASSWORD '${{ secrets.DB_PASSWORD }}';"
+          sudo -u postgres psql -c "ALTER ROLE ${{ secrets.DB_USER }} SET client_encoding TO 'utf8';"
+          sudo -u postgres psql -c "ALTER ROLE ${{ secrets.DB_USER }} SET default_transaction_isolation TO 'read committed';"
+          sudo -u postgres psql -c "ALTER ROLE ${{ secrets.DB_USER }} SET timezone TO 'UTC';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${{ secrets.DB_NAME }} TO ${{ secrets.DB_USER }};"
+        env:
+          DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}
+
+    # Step 5: Run Migrations
+      - name: Run Migrations
+        run: python manage.py migrate
+        env:
+          DEBUG: 'false'
+          DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}
+
+    # Step 6: Run Tests
+      - name: Run Tests
+        run: python manage.py test
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: 'false'
+          DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}
+
+    # Optional Step: Run Linting
+      - name: Run Flake8 Linting
+        run: pip install flake8 && flake8 .
