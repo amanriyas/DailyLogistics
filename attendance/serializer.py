@@ -22,8 +22,7 @@ class SiteAttendanceSerializer(serializers.ModelSerializer):
         model = SiteAttendance
         fields = "__all__"
 
-
-class EmployeeAttendanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmployeeAttendance
-        fields = "__all__"
+# class EmployeeAttendanceSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EmployeeAttendance
+#         fields = "__all__"

@@ -149,12 +149,46 @@ class SiteAttendanceList(APIView):
        all_site_attendance = SiteAttendance.objects.all()
        serializer = SiteAttendanceSerializer(all_site_attendance, many=True)
        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AddAttendance(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = SiteAttendanceSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            response_data = {
+                "message": "Site attendance added successfully",
+                "data": serializer.data
+            }
+            return JsonResponse(response_data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+
+
+class EditAttendance(APIView):
     
-class EmployeeAttendanceList(APIView):
-    def get (self, request):
-       all_employee_attendance = EmployeeAttendance.objects.all()
-       serializer = EmployeeAttendanceSerializer(all_employee_attendance, many=True)
-       return JsonResponse(serializer.data, status=status.HTTP_200_OK)    
+    def get_object(self, pk):
+        return get_object_or_404(SiteAttendance, pk=pk)
+    
+    def put(self, request, pk):
+        site_attendance = self.get_object(pk)
+        serializer = SiteAttendanceSerializer(site_attendance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response_data = {
+                "message": "Site attendance updated successfully",
+                "data": serializer.data
+            }
+            return JsonResponse(response_data, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
+    
+# class EmployeeAttendanceList(APIView):
+#     def get (self, request):
+#        all_employee_attendance = EmployeeAttendance.objects.all()
+#        serializer = EmployeeAttendanceSerializer(all_employee_attendance, many=True)
+#        return JsonResponse(serializer.data, status=status.HTTP_200_OK)    
+    
+
+   
     
 
 
