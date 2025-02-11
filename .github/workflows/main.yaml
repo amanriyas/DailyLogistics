@@ -29,6 +29,10 @@ jobs:
         run: | 
             docker-compose build
             docker-compose up -d
+      
+      - name: Check Logs for Issues
+        run: |
+          docker compose logs --tail=50      
         
       - name: Cleanup
         run: docker-compose down

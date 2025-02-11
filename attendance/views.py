@@ -181,11 +181,6 @@ class EditAttendance(APIView):
             return JsonResponse(response_data, status=status.HTTP_200_OK)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
     
-# class EmployeeAttendanceList(APIView):
-#     def get (self, request):
-#        all_employee_attendance = EmployeeAttendance.objects.all()
-#        serializer = EmployeeAttendanceSerializer(all_employee_attendance, many=True)
-#        return JsonResponse(serializer.data, status=status.HTTP_200_OK)    
     
 
    
