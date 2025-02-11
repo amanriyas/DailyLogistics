@@ -32,7 +32,7 @@ jobs:
       
       - name: Check Logs for Issues
         run: |
-          docker compose logs    
+          docker compose logs backend_container   
         
       - name: Cleanup
         run: docker-compose down
