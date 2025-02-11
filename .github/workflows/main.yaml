@@ -32,7 +32,7 @@ jobs:
       
       - name: Check Logs for Issues
         run: |
-          docker compose logs --tail=50      
+          docker compose logs --tail=100     
         
       - name: Cleanup
         run: docker-compose down
